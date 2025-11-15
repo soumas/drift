@@ -4,7 +4,7 @@ import 'package:sqlite3/sqlite3.dart';
 
 // #docregion check_cipher
 bool _debugCheckHasCipher(Database database) {
-  return database.select('PRAGMA cipher_version;').isNotEmpty;
+  return database.select('PRAGMA cipher;').isNotEmpty;
 }
 // #enddocregion check_cipher
 
@@ -15,10 +15,13 @@ void databases() {
   NativeDatabase.createInBackground(
     myDatabaseFile,
     setup: (rawDb) {
-      rawDb.execute("PRAGMA key = 'passphrase';");
+      // Make SQLite3MultipleCiphers choose a format compatible with SQLCipher.
+      // You can ignore this if you have not been using sqlcipher_flutter_libs
+      // before. See also: https://github.com/simolus3/sqlite3.dart/blob/main/UPGRADING_TO_V3.md#encryption
+      rawDb.execute("pragma cipher = 'sqlcipher'");
+      rawDb.execute('pragma legacy = 4');
 
-      // Recommended option, not enabled by default on SQLCipher
-      rawDb.config.doubleQuotedStringLiterals = false;
+      rawDb.execute("PRAGMA key = 'passphrase';");
     },
   );
   // #enddocregion encrypted1
@@ -27,11 +30,14 @@ void databases() {
   NativeDatabase.createInBackground(
     myDatabaseFile,
     setup: (rawDb) {
-      assert(_debugCheckHasCipher(rawDb));
-      rawDb.execute("PRAGMA key = 'passphrase';");
+      // To use a format compatible with SQLCipher - only relevant if you've
+      // used sqlcipher_flutter_libs before.
+      rawDb.execute("pragma cipher = 'sqlcipher'");
+      rawDb.execute('pragma legacy = 4');
 
-      // Recommended option, not enabled by default on SQLCipher
-      rawDb.config.doubleQuotedStringLiterals = false;
+      assert(_debugCheckHasCipher(rawDb));
+
+      rawDb.execute("PRAGMA key = 'passphrase';");
     },
   );
   // #enddocregion encrypted2
@@ -46,6 +52,7 @@ void databases() {
   }
 
   // This database can be passed to the constructor of your database class
+  // TODO: This is outdated, update
   NativeDatabase.createInBackground(
     File(encryptedDatabasePath),
     isolateSetup: () async {
@@ -79,9 +86,6 @@ void databases() {
     setup: (rawDb) {
       assert(_debugCheckHasCipher(rawDb));
       rawDb.execute("PRAGMA key = '${escapeString(yourKey)}';");
-
-      // Recommended option, not enabled by default on SQLCipher
-      rawDb.config.doubleQuotedStringLiterals = false;
     },
   );
   // #enddocregion migration

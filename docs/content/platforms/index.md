@@ -50,12 +50,6 @@ is maintaned and supported too.
 The new `package:drift/native.dart` implementation uses `dart:ffi` to bind to sqlite3's native C apis.
 This is the recommended approach for newer projects as described in the [getting started](../setup.md) guide.
 
-To ensure that your app ships with the latest sqlite3 version, also add a dependency to the `sqlite3_flutter_libs`
-package when using `package:drift/native.dart`!
-`sqlite3_flutter_libs` will configure your app to use a fixed sqlite3 version on Android, iOS and macOS.
-It only applies to your full Flutter app though, it can't override the sqlite3 version when running tests
-with `flutter test`.
-
 !!! note "A note on ffi and Android"
 
     
@@ -69,7 +63,6 @@ with `flutter test`.
     - Out of memory errors for very complex queries: Since the regular tmp directory isn't available on Android, you need to inform
     sqlite3 about the right directory to store temporary data. See [this comment](https://github.com/simolus3/drift/issues/876#issuecomment-710013503)
     for an example on how to do that.
-    
 
 ## Web
 
@@ -83,69 +76,13 @@ setup is required. The main article explains how to set up drift to work on the 
 ## Desktop
 
 Drift also supports all major Desktop operating systems where Dart runs on by using the
-`NativeDatabase` from `package:drift/native.dart`. Depending on your operating system, further
-setup might be required:
-
-### Windows
-
-For Flutter apps, depending on the `sqlite3_flutter_libs` package is enough. It will automatically
-bundle the latest sqlite3 version with your app as a DLL, and drift will automatically use that
-version.
-
-If you don't want to use `sqlite3_flutter_libs`, or if you're not running as a Flutter app
-(keep in mind that `flutter test` does not run as a full Flutter app!), you can [download sqlite](https://www.sqlite.org/download.html)
-and extract`sqlite3.dll` into a folder that's in your `PATH` environment variable to use drift.
-
-You can also ship a custom `sqlite3.dll` along with your app. See the section below for
-details.
-
-### Linux
-
-When depending on `sqlite3_flutter_libs` in your pubspec and using Flutter, no additional setup
-is necessary.
-When not running as a Flutter app (this includes `flutter test`!), you need to either use a
-`sqlite3` build from your distribution or include a custom `libsqlite3.so`.
-
-On most distributions, `libsqlite3.so` is installed already. If you only need to use drift for
-development, you can just install the sqlite3 libraries. On Ubuntu and other Debian-based
-distros, you can install the `libsqlite3-dev` package for this. Virtually every other distribution
-will also have a prebuilt package for sqlite.
-
-You can also ship a custom `libsqlite3.so` along with your app. See the section below for
-details.
-
-### macOS
-
-This one is easy! Just use the `NativeDatabase` from `package:drift/native.dart`. No further setup is
-necessary.
-
-If you need a custom sqlite3 library, or want to make sure that your app will always use a
-specific sqlite3 version, you can also ship that version with your app.
-When depending on `sqlite3_flutter_libs`, drift will automatically use that version which is
-usually more recent than the `sqlite3` version that comes with macOS.
-Again, note that this only works with full Flutter apps and not in say `flutter test`.
-
-For tests or using a custom sqlite3 version without `sqlite3_flutter_libs`, see the following
-section.
+`NativeDatabase` from `package:drift/native.dart`. On Windows, Linux and macOS, no further
+setup is required.
 
 ### Bundling sqlite with your app
 
-If you don't want to use the `sqlite3` version from the operating system (or if it's not
-available), you can also ship `sqlite3` with your app.
-The best way to do that depends on how you ship your app. Here, we assume that you can
-install the dynamic library for `sqlite` next to your application executable.
+Starting from version 3.0.0 of the `sqlite3` package, a copy of SQLite is automatically built
+or downloaded for all apps depending on it.
 
-This example shows how to do that on Linux, by using a custom `sqlite3.so` that we assume
-lives next to your application:
-
-<Snippet href="/lib/src/snippets/platforms/platforms.dart" name="(full)" />
-
-Be sure to use drift _after_ you set the platform-specific overrides.
-When you use drift in [another isolate](../isolates.md),
-you'll also need to apply the opening overrides on that background isolate.
-You can call them in the isolate's entrypoint before using any drift apis.
-
-For standard Flutter tests running in a Dart VM without native plugins, you can use a
-`flutter_test_config.dart` file to ensure that a recent version of sqlite3 is available.
-An example for this is available [here](https://github.com/simolus3/drift/discussions/1745#discussioncomment-2326294).
-For Dart tests, a similar logic could be put into a `setupAll` callback.
+To customize that bundling logic, see the [build hook options](https://pub.dev/documentation/sqlite3/latest/topics/hook-topic.html)
+for that package.
