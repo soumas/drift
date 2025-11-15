@@ -16,13 +16,11 @@ import 'dart:isolate';
 import 'package:async/async.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/isolate.dart';
-import 'package:meta/meta.dart';
 import 'package:sqlite3/common.dart';
 import 'package:sqlite3/sqlite3.dart';
 
 import 'backends.dart';
 import 'src/sqlite3/database.dart';
-import 'src/sqlite3/database_tracker.dart';
 
 export 'package:sqlite3/sqlite3.dart' show SqliteException;
 
@@ -45,17 +43,9 @@ typedef IsolateSetup = FutureOr<void> Function();
 
 /// Signature of a function that obtains an instance of [Sqlite3] bindings.
 ///
-/// By default, drift will use the default [sqlite3] instance from
-/// `package:sqlite3`. But especially for users interested in trying out
-/// [`sqlite3_native_assets`](https://pub.dev/packages/sqlite3_native_assets),
-/// passing this function allows customizing the SQLite bindings:
-///
-/// ```dart
-/// NativeDatabase.createInBackground(
-///   File(...),
-///   sqlite3: () => sqlite3Native,
-/// );
-/// ```
+/// In previous versions, this allowed previewing the `sqlite3_native_assets`
+/// package. Now that the `sqlite3` package uses native assets exclusively, it
+/// is no longer useful.
 typedef SqliteResolver = FutureOr<Sqlite3> Function();
 
 /// A drift database implementation based on `dart:ffi`, running directly in a
@@ -91,12 +81,6 @@ class NativeDatabase extends DelegatedDatabase {
   /// If you want to manage migrations independently or don't need them at all,
   /// you can disable migrations in drift with the [enableMigrations]
   /// parameter.
-  ///
-  /// The [sqlite3] parameter can be used to provide a function responsible for
-  /// obtaining an instance of the [Sqlite3] bindings drift will use to open the
-  /// database. This is particularly relevant for users interested in using
-  /// drift with the native assets SDK feature, see [SqliteResolver] for an
-  /// example.
   /// {@endtemplate}
   factory NativeDatabase(
     File file, {
@@ -354,17 +338,14 @@ class NativeDatabase extends DelegatedDatabase {
   /// ```
   ///
   /// For more information, see [issue 835](https://github.com/simolus3/drift/issues/835).
-  @experimental
+  @Deprecated('This method is no longer necessary and does nothing.')
   static Future<void> closeExistingInstances(
-      {SqliteResolver sqlite3 = _NativeDelegate._defaultResolver}) async {
-    tracker(await sqlite3()).closeExisting();
-  }
+      {SqliteResolver sqlite3 = _NativeDelegate._defaultResolver}) async {}
 }
 
 class _NativeDelegate extends Sqlite3Delegate<Database> {
   final File? file;
   final SqliteResolver _sqlite3;
-  DatabaseTracker? _trackedBy;
 
   _NativeDelegate(this.file, DatabaseSetup? setup, bool enableMigrations,
       bool cachePreparedStatements, this._sqlite3)
@@ -403,11 +384,6 @@ class _NativeDelegate extends Sqlite3Delegate<Database> {
       }
 
       db = sqlite3.open(file.path);
-      try {
-        _trackedBy = tracker(sqlite3)..markOpened(file.path, db);
-      } on SqliteException {
-        // ignore
-      }
     } else {
       db = sqlite3.openInMemory();
     }
@@ -446,12 +422,6 @@ class _NativeDelegate extends Sqlite3Delegate<Database> {
     await super.close();
 
     if (closeUnderlyingWhenClosed) {
-      try {
-        _trackedBy?.markClosed(database);
-      } on SqliteException {
-        // ignore
-      }
-
       database.close();
     }
   }
