@@ -172,8 +172,8 @@ counter if it already exists:
 
 Note that this requires a fairly recent sqlite3 version (3.24.0) that might not
 be available on older Android devices when using `drift_sqflite`. `NativeDatabases`
-and `sqlite3_flutter_libs` includes the latest sqlite on Android, so consider using
-it if you want to support upserts.
+and the `sqlite3` package includes the latest sqlite, so consider using it if you
+want to support upserts.
 
 Also note that the returned rowid may not be accurate when an upsert took place.
 
@@ -183,7 +183,7 @@ You can use `insertReturning` to insert a row or companion and immediately get t
 The returned row contains all the default values and incrementing ids that were
 generated.
 
-__Note:__ This uses the `RETURNING` syntax added in sqlite3 version 3.35, which is not available on most operating systems by default. When using this method, make sure that you have a recent sqlite3 version available. This is the case with `sqlite3_flutter_libs`.
+__Note:__ This uses the `RETURNING` syntax added in sqlite3 version 3.35, which is not available on most operating systems by default. When using this method, make sure that you have a recent sqlite3 version available. This is the case with `NativeDatabase`.
 
 For instance, consider this snippet using the tables from the [getting started guide](../setup.md):
 

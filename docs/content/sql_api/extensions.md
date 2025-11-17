@@ -10,8 +10,8 @@ that might be present.
 The generator can't know about the sqlite3 library your database is talking to
 though, so it makes a pessimistic assumption of using an old sqlite3 version
 without any enabled extensions by default.
-When using a package like `sqlite3_flutter_libs`, you get the latest sqlite3
-version with the json1 and fts5 extensions enabled. You can inform the generator
+In most setups however, the `sqlite3` package would bundle the latest SQLite version
+with the json1 and fts5 extensions enabled. You can inform the generator
 about this by using [build options](../generation_options/index.md).
 
 ## json1

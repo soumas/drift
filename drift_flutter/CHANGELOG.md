@@ -1,6 +1,7 @@
 ## 0.2.8-dev
 
 - Add `isolateSetup` parameter to `DriftNativeOptions` to setup isolates spawned to host database connections.
+- Use version 3.x of the `sqlite3` package.
 
 ## 0.2.7
 

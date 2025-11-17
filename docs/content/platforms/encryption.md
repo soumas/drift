@@ -52,8 +52,7 @@ is using the database in any way:
 ### Encrypting existing databases
 
 If you have an existing database which you now want to encrypt, there are a few steps to consider.
-First, replace your dependencies on `drift_flutter` or `sqlite3_flutter_libs` with
-`sqlcipher_flutter_libs` as shown in the [setup](#setup).
+First, add a `hooks` section to your pubspec as shown in the [setup](#setup).
 
 Note however that you can't just apply the `pragma key = ` statement on existing databases!
 To migrate existing databases to encryption, SQLCipher recommends [these steps](https://discuss.zetetic.net/t/how-to-encrypt-a-plaintext-sqlite-database-to-use-sqlcipher-and-avoid-file-is-encrypted-or-is-not-a-database-errors/868):

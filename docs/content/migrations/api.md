@@ -138,7 +138,7 @@ If you're renaming a column in Dart, note that the easiest way is to just rename
 `named`: `TextColumn newName => text().named('old_name')()`. That is fully backwards compatible and
 doesn't require a migration.
 
-If you know your app runs on sqlite 3.25.0 or later (it does if you're using `sqlite3_flutter_libs`),
+If you know your app runs on sqlite 3.25.0 or later (it does if you're using `NativeDatabase`),
 you can also use the `renameColumn` api in `Migrator`:
 
 ```dart

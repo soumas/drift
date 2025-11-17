@@ -30,8 +30,6 @@ QueryExecutor _openConnection() {
 __Note__: The `drift_sqflite` package is an alternative to the standard approach suggested in
 the drift documentation (which consists of a `NativeDatabase` instead of `SqfliteQueryExecutor`).
 Using this package is primarily recommended when migrating existing projects off `moor_flutter`.
-When using a `SqfliteQueryExecutor`, you don't need to depend on `sqlite3_flutter_libs` like the
-drift documentation suggests for the standard approach.
 
 ### Migrating from `moor_flutter`
 

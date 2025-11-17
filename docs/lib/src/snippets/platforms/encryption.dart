@@ -52,7 +52,6 @@ void databases() {
   }
 
   // This database can be passed to the constructor of your database class
-  // TODO: This is outdated, update
   NativeDatabase.createInBackground(
     File(encryptedDatabasePath),
     isolateSetup: () async {
@@ -61,22 +60,16 @@ void databases() {
 
       if (await existing.exists() && !await encrypted.exists()) {
         // We have an existing database to migrate.
-        final plaintextDb = sqlite3.open(existingDatabasePath)
-          ..execute(
-            "ATTACH DATABASE '${escapeString(encryptedDatabasePath)}' "
-            "AS encrypted KEY '${escapeString(yourKey)}';",
-          )
-          ..execute("SELECT sqlcipher_export('encrypted');");
+        final plaintextDb = sqlite3.open(existingDatabasePath);
 
-        // sqlcipher_export doesn't apply the user_version pragma used by drift
-        // to implement migrations. The version of the encrypted database must
-        // match the previous state.
-        final userVersion =
-            plaintextDb.select('PRAGMA user_version;').first.columnAt(0) as int;
-        plaintextDb
-          ..execute('PRAGMA encrypted.user_version = $userVersion;')
-          ..execute('DETACH DATABASE encrypted;')
-          ..close();
+        final encryptedDb = sqlite3.open(encryptedDatabasePath)
+          ..execute("pragma key = '${escapeString(yourKey)}'");
+
+        // Export the original database into the encrypted copy.
+        await plaintextDb.backup(encryptedDb).drain();
+
+        encryptedDb.close();
+        plaintextDb.close();
 
         // This should have created the encrypted database.
         assert(await encrypted.exists());

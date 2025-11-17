@@ -110,6 +110,5 @@ and cast to an integer instead:
 
 <Snippet href="/lib/src/snippets/dart_api/datetime_conversion.dart" name="text-to-unix-old" />
 
-When using a `NativeDatabase` with a recent dependency on the
-`sqlite3_flutter_libs` package, you can safely assume that you are on a recent
+When using a `NativeDatabase`, you can safely assume that you are on a recent
 sqlite3 version with support for `unixepoch`.

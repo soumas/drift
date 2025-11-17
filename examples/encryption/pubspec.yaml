@@ -3,19 +3,20 @@ description: A small Flutter app demonstrating how to use drift with encryption.
 
 publish_to: 'none'
 version: 1.0.0+1
-resolution: workspace
+# This can't be part of the workspace since it uses its own hook options
+resolution:    
 
 environment:
   sdk: ">=3.5.0 <4.0.0"
 
 dependencies:
   drift: ^2.0.2+1
-  sqlcipher_flutter_libs: ^0.6.0
   flutter:
     sdk: flutter
   path_provider: ^2.0.11
   path: ^1.8.1
   sqlite3: ^3.0.0
+  stack_trace: ^1.11.1
 
 dev_dependencies:
   flutter_test:
@@ -26,3 +27,16 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+hooks:
+  user_defines:
+    sqlite3:
+      source: sqlite3mc # Use SQLite3MultipleCiphers for encryption instead of SQLite.
+
+dependency_overrides:
+  drift:
+    path: ../../drift
+  drift_dev:
+    path: ../../drift_dev
+  sqlparser:
+    path: ../../sqlparser

@@ -15,7 +15,7 @@ Drift's repository also contains a number of smaller examples showcasing select
 drift features:
 
 - The [encryption] example contains a simple Flutter app using an encrypted drift
-  database, powered by the `sqlcipher_flutter_libs` package.
+  database, powered by SQLite3MultipleCiphers.
 <!-- - [web_worker] and [flutter_web_worker] are small web-only apps using drift in
   a shared web worker, which allows for a real-time synchronization of the
   database across tabs. Of course, this pattern can only be embedded into

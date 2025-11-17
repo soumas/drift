@@ -26,7 +26,6 @@ workspace:
   - extras/integration_tests/web_wasm
 
   - examples/app
-  - examples/encryption
   - examples/flutter_web_worker_example
   - examples/migrations_example
   - examples/modular

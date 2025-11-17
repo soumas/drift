@@ -86,8 +86,8 @@ Using existing databases is explained in more detail in [this example](../exampl
 
 ## Used compile options on Android
 
-On Android, iOS and macOs, depending on `sqlite3_flutter_libs` will include a custom build of sqlite instead of
-using the one from the system.
+On Android, iOS and macOs, depending on `sqlite3` (which `drift` already depends on) will include a custom build of
+sqlite instead of using the one from the system.
 The chosen options help reduce binary size by removing features not used by drift. Important options are marked in bold.
 
 - We use the `-O3` performance option
@@ -154,13 +154,11 @@ They have that `sql` prefix to avoid clashes with `dart:math`.
 ## Migrating from moor_flutter to `drift/native`
 
 First, adapt your `pubspec.yaml`: You can remove the `moor_flutter` dependency and instead
-add both the `drift` and `sqlite3_flutter_libs` dependencies:
-
+add the `drift` dependency:
 
 ```yaml
 dependencies:
  drift: ^{{ versions.drift }}
- sqlite3_flutter_libs:
  sqflite: ^1.1.7 # Still used to obtain the database location
 dev_dependencies:
  drift_dev: ^{{ versions.drift_dev }}

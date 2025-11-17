@@ -179,21 +179,19 @@ We currently support the following extensions:
 - [fts5](https://www.sqlite.org/fts5.html): Support `CREATE VIRTUAL TABLE` statements for `fts5` tables and the `MATCH` operator.
   Functions like `highlight` or `bm25` are available as well.
 - `rtree`: Static analysis support for the [R\*Tree](https://www.sqlite.org/rtree.html) extension.
-  Enabling this option is safe when using a `NativeDatabase` with `sqlite3_flutter_libs`,
+  Enabling this option is safe when using a `NativeDatabase`,
   which compiles sqlite3 with the R*Tree extension enabled.
 - [geopoly](https://www.sqlite.org/geopoly.html), a generalization of the R*Tree module supporting more complex
-  polygons. Note that this is not the case for most sqlite3 builds,
-  including the ones shipping with `sqlite3_flutter_libs`.
+  polygons. Note that this is not the case for most sqlite3 builds, including the ones shipping with `package:sqlite3`.
 - [dbstat](https://www.sqlite.org/dbstat.html), a module reporting information about the amount of disk space used by
-  different tables. This requires a build flag when compiling SQLite. `sqlite3_flutter_libs` sets that flag,
-  but other SQLite distributions might not.
+  different tables. This requires a build flag when compiling SQLite. `package:sqlite3` sets that flag, but other SQLite distributions might not.
 - `moor_ffi`: Enables support for functions that are only available when using a `NativeDatabase`. This contains `pow`, `sqrt` and a variety
   of trigonometric functions. Details on those functions are available [here](../platforms/vm.md#drift-only-functions).
 - `math`: Assumes that sqlite3 was compiled with [math functions](https://www.sqlite.org/lang_mathfunc.html).
   This module is largely incompatible with the `moor_ffi` module.
 - `spellfix1`: Assumes that the [spellfix1](https://www.sqlite.org/spellfix1.html)
   module is available. Note that this is not the case for most sqlite3 builds,
-  including the ones shipping with `sqlite3_flutter_libs`.
+  including the ones shipping with `package:sqlite3`.
 - `powersync`: Assumes that the PowerSync SQLite extension is available, allowing references to e.g.
   `powersync_crud` in `CREATE TABLE` statements.
 

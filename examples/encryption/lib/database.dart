@@ -40,13 +40,13 @@ QueryExecutor _openDatabase() {
     return NativeDatabase.createInBackground(
       File(p.join(path.path, 'app.db.enc')),
       setup: (db) {
-        // Check that we're actually running with SQLCipher by quering the
-        // cipher_version pragma.
-        final result = db.select('pragma cipher_version');
+        // Check that we're actually running with sqlite3mc by quering the
+        // cipher pragma.
+        final result = db.select('pragma cipher');
         if (result.isEmpty) {
           throw UnsupportedError(
-            'This database needs to run with SQLCipher, but that library is '
-            'not available!',
+            'This database needs to run with SQLite3MultipleCiphers, but that '
+            'library is not available!',
           );
         }
 

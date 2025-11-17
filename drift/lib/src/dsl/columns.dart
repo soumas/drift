@@ -281,8 +281,7 @@ extension BuildColumn<T extends Object> on ColumnBuilder<T> {
   /// column, you need to re-generate the table with a [TableMigration].
   ///
   /// Note that generated columns are only available in sqlite3 version
-  /// `3.31.0`. When using `sqlite3_flutter_libs` or a web database, this is not
-  /// a problem.
+  /// `3.31.0`.
   VirtualColumnBuilder<T> generatedAs(Expression<T> generatedAs,
           {bool stored = false}) =>
       _isGenerated();

@@ -2,8 +2,9 @@
 /// sqlite extension.
 ///
 /// Note that the json1 extension might not be available on all runtimes.
-/// When using this library, it is recommended to use a `NativeDatabase` with
-/// a dependency on `sqlite3_flutter_libs`.
+/// When using this library, it is recommended to use a database implementation
+/// based on the `sqlite3` package, which will bundle a recent SQLite version
+/// with your app.
 @experimental
 library;
 

@@ -49,33 +49,6 @@ class MyDatabase extends _$MyDatabase {
 }
 ```
 
-!!! note "Installing sqlite"
-
-
-    We can't distribute an sqlite installation as a pub package (at least
-    not as something that works outside of a Flutter build), so you need
-    to ensure that you have the sqlite3 shared library installed on your
-    system.
-
-    On macOS, it's installed by default.
-
-    On Linux, you can use the `libsqlite3-dev` package on Ubuntu and the
-    `sqlite3` package on Arch (other distros will have similar packages).
-
-    On Windows, you can [download 'Precompiled Binaries for Windows'](https://www.sqlite.org/download.html)
-    and extract `sqlite3.dll` into a folder that's in your `PATH`
-    environment variable. Then restart your device to ensure that
-    all apps will run with this `PATH` change.
-
-    As `sqlite3_flutter_libs` bundles the latest sqlite3 version with your app,
-    using a recent sqlite3 version is recommended to avoid differences in how tests
-    behave from your app.
-    The minimum sqlite version tested with drift is 3.29.0, but many drift features
-    like `returning` or generated columns will require more recent versions.
-
-
-
-
 ## Writing tests
 
 We can create an in-memory version of the database by using a

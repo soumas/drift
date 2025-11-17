@@ -499,11 +499,9 @@ class Migrator {
   ///
   /// __Important compatibility information__: [renameColumn] uses an
   /// `ALTER TABLE RENAME COLUMN` internally. Support for that syntax was added
-  /// in sqlite version 3.25.0, released on 2018-09-15. When you're using
-  /// Flutter and depend on `sqlite3_flutter_libs`, you're guaranteed to have
-  /// that version. Otherwise, please ensure that you only use [renameColumn] if
-  /// you know you'll run on sqlite 3.20.0 or later. In MariaDB support for that
-  /// same syntax was added in MariaDB version 10.5.2, released on 2020-03-26.
+  /// in sqlite version 3.25.0, released on 2018-09-15.
+  /// In MariaDB, support for that same syntax was added in MariaDB version
+  /// 10.5.2, released on 2020-03-26.
   Future<void> renameColumn(
       TableInfo table, String oldName, GeneratedColumn column) async {
     final context = _createContext();

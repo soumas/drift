@@ -65,8 +65,7 @@ browser in that case.
 
 On all platforms, drift requires access to [sqlite3](https://sqlite.org/index.html), the popular
 database system written as a C library.
-On native platforms, drift can use the sqlite3 library from your operating system. Flutter apps
-typically include a more recent version of that library with the `sqlite3_flutter_libs` package too.
+On native platforms, drift can use the sqlite3 library from your operating system or bundle a copy.
 
 Web browsers don't have builtin access to the sqlite3 library, so it needs to be included with your app.
 The `sqlite3` Dart package (used by drift internally) contains a toolchain to compile sqlite3 to WebAssembly

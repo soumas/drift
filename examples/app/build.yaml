@@ -19,12 +19,12 @@ targets:
           databases:
             default: lib/database/database.dart
           # Drift analyzes SQL queries at compile-time. For this purpose, it needs to know which sqlite3
-          # features will be available. We depend on `sqlite3_flutter_libs`, which lets us use the latest
-          # version with fts5 enabled.
+          # features will be available. Since the `sqlite3` package bundles a copy of SQLite by default,
+          # we can assume a recent SQLite version.
           sql:
             dialect: sqlite
             options:
-              version: "3.38"
+              version: "3.51"
               modules: [fts5]
 
       # Configuring this builder isn't required for most apps. In our case, we
