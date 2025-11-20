@@ -296,21 +296,6 @@ jobs:
       - name: Install dependencies in drift/example/app
         run: melos bootstrap --scope app
 
-      - name: Download sqlite3
-        uses: actions/download-artifact@v4
-        with:
-          name: sqlite3
-          path: drift/.dart_tool/sqlite3/
-      - name: Use downloaded sqlite3
-        shell: bash
-        run: |
-          chmod a+x drift/.dart_tool/sqlite3/latest/sqlite3
-          echo $(realpath drift/.dart_tool/sqlite3/latest) >> $GITHUB_PATH
-          echo "LD_LIBRARY_PATH=$(realpath drift/.dart_tool/sqlite3/latest)" >> $GITHUB_ENV
-      - name: Check sqlite3 version
-        run: sqlite3 --version
-        shell: bash
-
       - name: Generate code
         run: dart run build_runner build --delete-conflicting-outputs
         working-directory: examples/app
@@ -349,10 +334,6 @@ jobs:
       - name: Test
         working-directory: examples/migrations_example
         run: dart test
-      - name: Test with older sqlite3
-        working-directory: examples/migrations_example
-        run: |
-          LD_LIBRARY_PATH=$(realpath ../../drift/.dart_tool/sqlite3/minimum) dart test
       - name: Check that extracting schema still works
         working-directory: examples/migrations_example
         run: dart run drift_dev schema dump lib/database.dart drift_migrations/

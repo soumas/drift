@@ -67,12 +67,12 @@ final class SearchDatabase {
         yield SearchResult(path, title, snippet);
       }
     } finally {
-      stmt.dispose();
+      stmt.close();
     }
   }
 
   void close() {
-    _db.dispose();
+    _db.close();
     _vfs._cache.loader.close();
   }
 }
