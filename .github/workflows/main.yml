@@ -91,7 +91,7 @@ jobs:
       - run: dart analyze --fatal-infos --fatal-warnings
       # build, test and upload coverage
       - run: dart run build_runner build --delete-conflicting-outputs
-      - run: dart test --preset ci_unit_tests #-x background_isolate --coverage=coverage
+      - run: dart test --preset ci_unit_tests --concurrency 1 #-x background_isolate --coverage=coverage
         env:
           DID_RUN_BUILD_RUNNER: "1"
   #      - uses: actions/upload-artifact@v2
@@ -277,9 +277,9 @@ jobs:
     needs: [setup]
     strategy:
       matrix:
-        # We currently don't support <3.35.1 because we depend on melos v7, which needs Dart 3.9.0.
-        # Generally, we try to support the latest two stable Flutter releases.
-        flutter: ["3.35.1"]
+        # Generally, drift tries to support the latest two stable Flutter releases.
+        # Current we require the latest release to use version 3.x of the sqlite3 package.
+        flutter: ["3.38.2"]
 
     steps:
       - uses: actions/checkout@v4

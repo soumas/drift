@@ -24,7 +24,7 @@ targets:
           sql:
             dialect: sqlite
             options:
-              version: "3.51"
+              version: "3.38"
               modules: [fts5]
 
       # Configuring this builder isn't required for most apps. In our case, we

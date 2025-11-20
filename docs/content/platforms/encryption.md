@@ -21,7 +21,7 @@ interesting for Desktop applications.
 
 ### Setup
 
-!!! Recent changes
+!!! warning "Recent changes"
 
     Previous versions of this page suggested using `sqlcipher_flutter_libs`. When using version
     3 of the `sqlite3` package, that is no longer applicable.
