@@ -58,19 +58,27 @@ void main() {
     child.kill();
   });
 
-  test('can list create statements', () async {
-    final response = await vm.callServiceExtension(
-      'ext.drift.database',
-      args: {'action': 'collect-expected-schema', 'db': '0'},
-      isolateId: isolateId,
-    );
+  test(
+    'can list create statements',
+    () async {
+      final response = await vm.callServiceExtension(
+        'ext.drift.database',
+        args: {'action': 'collect-expected-schema', 'db': '0'},
+        isolateId: isolateId,
+      );
 
-    expect(
-        response.json!['r'],
-        containsAll([
-          'CREATE TABLE IF NOT EXISTS "categories" ("id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "desc" TEXT NOT NULL UNIQUE, "priority" INTEGER NOT NULL DEFAULT 0, "description_in_upper_case" TEXT NOT NULL GENERATED ALWAYS AS (UPPER("desc")) VIRTUAL);',
-          'CREATE TABLE IF NOT EXISTS "todos" ("id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "title" TEXT NULL, "content" TEXT NOT NULL, "target_date" INTEGER NULL UNIQUE, "category" INTEGER NULL REFERENCES categories (id) DEFERRABLE INITIALLY DEFERRED, "status" TEXT NULL, UNIQUE ("title", "category"), UNIQUE ("title", "target_date"));',
-          'CREATE TABLE IF NOT EXISTS "shared_todos" ("todo" INTEGER NOT NULL, "user" INTEGER NOT NULL, PRIMARY KEY ("todo", "user"), FOREIGN KEY (todo) REFERENCES todos(id), FOREIGN KEY (user) REFERENCES users(id));'
-        ]));
-  });
+      expect(
+          response.json!['r'],
+          containsAll([
+            'CREATE TABLE IF NOT EXISTS "categories" ("id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "desc" TEXT NOT NULL UNIQUE, "priority" INTEGER NOT NULL DEFAULT 0, "description_in_upper_case" TEXT NOT NULL GENERATED ALWAYS AS (UPPER("desc")) VIRTUAL);',
+            'CREATE TABLE IF NOT EXISTS "todos" ("id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "title" TEXT NULL, "content" TEXT NOT NULL, "target_date" INTEGER NULL UNIQUE, "category" INTEGER NULL REFERENCES categories (id) DEFERRABLE INITIALLY DEFERRED, "status" TEXT NULL, UNIQUE ("title", "category"), UNIQUE ("title", "target_date"));',
+            'CREATE TABLE IF NOT EXISTS "shared_todos" ("todo" INTEGER NOT NULL, "user" INTEGER NOT NULL, PRIMARY KEY ("todo", "user"), FOREIGN KEY (todo) REFERENCES todos(id), FOREIGN KEY (user) REFERENCES users(id));'
+          ]));
+    },
+    onPlatform: {
+      'linux': Skip(
+          'todo: Subprocess seems to cause memory corruption in outer process? '
+          'There are ld crashes on Linux')
+    },
+  );
 }
