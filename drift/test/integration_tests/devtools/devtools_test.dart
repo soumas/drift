@@ -15,7 +15,7 @@ void main() {
   late VmService vm;
   late String isolateId;
 
-  setUpAll(() async {
+  setUp(() async {
     final socket = await ServerSocket.bind(InternetAddress.loopbackIPv4, 0);
     final port = socket.port;
     await socket.close();
@@ -54,7 +54,7 @@ void main() {
     isolateId = state.isolates!.single.id!;
   });
 
-  tearDownAll(() async {
+  tearDown(() async {
     child.kill();
   });
 
